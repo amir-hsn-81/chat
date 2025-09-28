@@ -1,14 +1,14 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { Chat, Message } from '../types';
 import ChatMessage from './ChatMessage';
 import UserAvatar from './UserAvatar';
-import { BotIcon, SendIcon } from '../constants';
+import { BotIcon, SendIcon, BackIcon } from '../constants';
 import { getGeminiResponse } from '../services/geminiService';
 
 interface ChatWindowProps {
-  chat: Chat | undefined;
+  chat: Chat;
   onSendMessage: (chatId: number, message: Message) => void;
+  onGoBack: () => void;
 }
 
 const TypingIndicator: React.FC = () => (
@@ -21,7 +21,7 @@ const TypingIndicator: React.FC = () => (
 );
 
 
-const ChatWindow: React.FC<ChatWindowProps> = ({ chat, onSendMessage }) => {
+const ChatWindow: React.FC<ChatWindowProps> = ({ chat, onSendMessage, onGoBack }) => {
   const [newMessage, setNewMessage] = useState('');
   const [isBotReplying, setIsBotReplying] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -32,7 +32,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ chat, onSendMessage }) => {
 
   useEffect(() => {
     scrollToBottom();
-  }, [chat?.messages]);
+  }, [chat?.messages, isBotReplying]);
 
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -50,6 +50,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ chat, onSendMessage }) => {
 
     if (chat.user.isBot) {
       setIsBotReplying(true);
+      scrollToBottom();
       const botResponseText = await getGeminiResponse(userMessage.text, chat.messages);
       const botMessage: Message = {
         id: Date.now() + 1,
@@ -62,17 +63,16 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ chat, onSendMessage }) => {
     }
   };
 
-  if (!chat) {
-    return (
-      <div className="w-2/3 flex-grow flex flex-col items-center justify-center bg-gray-800 text-gray-400">
-        <h2 className="text-2xl">Select a chat to start messaging</h2>
-      </div>
-    );
-  }
-
   return (
-    <div className="w-2/3 flex-grow flex flex-col bg-gray-800">
-      <header className="flex items-center p-4 bg-gray-900 border-b border-gray-700 shadow-md">
+    <div className="w-full h-full flex flex-col bg-gray-800">
+      <header className="flex items-center p-4 bg-gray-900 border-b border-gray-700 shadow-md flex-shrink-0">
+        <button 
+            onClick={onGoBack} 
+            className="mr-2 p-2 rounded-full hover:bg-gray-700 active:bg-gray-600 transition-colors duration-200"
+            aria-label="Go back to chats"
+        >
+            <BackIcon />
+        </button>
         <UserAvatar avatarUrl={chat.user.avatarUrl} name={chat.user.name} />
         <div className="ml-4">
             <div className="flex items-center">
@@ -87,11 +87,15 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ chat, onSendMessage }) => {
         {chat.messages.map((msg) => (
           <ChatMessage key={msg.id} message={msg} contact={chat.user} />
         ))}
-         {isBotReplying && <TypingIndicator />}
+         {isBotReplying && (
+            <div className="flex justify-start">
+                <TypingIndicator />
+            </div>
+         )}
         <div ref={messagesEndRef} />
       </main>
 
-      <footer className="p-4 bg-gray-900 border-t border-gray-700">
+      <footer className="p-4 bg-gray-900 border-t border-gray-700 flex-shrink-0">
         <form onSubmit={handleSendMessage} className="flex items-center space-x-4">
           <input
             type="text"
@@ -105,6 +109,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ chat, onSendMessage }) => {
             type="submit"
             disabled={!newMessage.trim()}
             className="bg-blue-600 text-white p-3 rounded-full hover:bg-blue-500 active:bg-blue-700 disabled:bg-gray-600 disabled:cursor-not-allowed transform transition-all duration-200 ease-in-out hover:scale-110 active:scale-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-900"
+            aria-label="Send message"
           >
             <SendIcon />
           </button>

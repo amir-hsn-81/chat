@@ -1,19 +1,19 @@
-
 import { User, Chat } from './types';
 
 export const CURRENT_USER_ID = 1;
 
 export const USERS: User[] = [
-  { id: 1, name: 'You', avatarUrl: 'https://picsum.photos/seed/you/100/100' },
-  { id: 2, name: 'Alice', avatarUrl: 'https://picsum.photos/seed/alice/100/100' },
-  { id: 3, name: 'Bob', avatarUrl: 'https://picsum.photos/seed/bob/100/100' },
+  { id: 1, name: 'You', avatarUrl: 'https://picsum.photos/seed/you/100/100', code: 'you#0001' },
+  { id: 2, name: 'Alice', avatarUrl: 'https://picsum.photos/seed/alice/100/100', code: 'alice#0002' },
+  { id: 3, name: 'Bob', avatarUrl: 'https://picsum.photos/seed/bob/100/100', code: 'bob#0003' },
   {
     id: 4,
     name: 'Gemini Bot',
     avatarUrl: 'https://picsum.photos/seed/gemini/100/100',
+    code: 'gemini#0004',
     isBot: true
   },
-  { id: 5, name: 'Charlie', avatarUrl: 'https://picsum.photos/seed/charlie/100/100' },
+  { id: 5, name: 'Charlie', avatarUrl: 'https://picsum.photos/seed/charlie/100/100', code: 'charlie#0005' },
 ];
 
 export const INITIAL_CHATS: Chat[] = [
@@ -30,7 +30,7 @@ export const INITIAL_CHATS: Chat[] = [
     id: 2,
     user: USERS[2], // Bob
     messages: [
-      { id: 1, text: 'Did you see the game last night?', senderId: 2, timestamp: 'Yesterday' },
+      { id: 1, text: 'Did you see the game last night?', senderId: 3, timestamp: 'Yesterday' },
       { id: 2, text: 'Yeah, it was intense!', senderId: 1, timestamp: 'Yesterday' },
     ],
   },
@@ -64,5 +64,23 @@ export const BotIcon = () => (
         <path d="M3.283 14.043a.75.75 0 0 1 1.06-1.06l1.06 1.06a.75.75 0 0 1-1.06 1.06l-1.06-1.06Zm16.374 1.06a.75.75 0 0 1-1.06-1.06l1.06-1.06a.75.75 0 1 1 1.06 1.06l-1.06 1.06ZM12 18.75a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5a.75.75 0 0 1 .75-.75Z" />
         <path fillRule="evenodd" d="M8.625 14.25a.75.75 0 0 1 .75.75v2.25a.75.75 0 0 1-1.5 0v-2.25a.75.75 0 0 1 .75-.75Zm6.75 0a.75.75 0 0 1 .75.75v2.25a.75.75 0 0 1-1.5 0v-2.25a.75.75 0 0 1 .75-.75Z" clipRule="evenodd" />
         <path d="M5.5 16.5a.75.75 0 0 1 .75.75v2.25a.75.75 0 0 1-1.5 0V17.25a.75.75 0 0 1 .75-.75Zm13.5 0a.75.75 0 0 1 .75.75v2.25a.75.75 0 0 1-1.5 0V17.25a.75.75 0 0 1 .75-.75Z" />
+    </svg>
+);
+
+export const BackIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+    </svg>
+);
+
+export const PlusIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+    </svg>
+);
+
+export const CopyIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 0 1-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 0 1 1.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 0 0-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 0 1-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 0 0-3.375-3.375h-1.5a1.125 1.125 0 0 1-1.125-1.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H9.75" />
     </svg>
 );
